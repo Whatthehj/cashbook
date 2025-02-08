@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+<div class="container" id="forchart">
+  <h2>가계부 리스트</h2>            
+  <table class="table">
+    <thead>
+      <tr>
+      <th>id</th>
+        <th>description</th>
+        <th>amount</th>
+        <th>
+        
+         <a th:href="@{/transactions(order=${currentOrder == 'asc' ? 'desc' : 'asc'})}">
+                     date
+                    <span th:if="${order == 'asc'}">▲</span>
+                    <span th:if="${order == 'desc'}">▼</span>
+                </a>
+        </th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="myList : ${myList}">
+      
+        <td th:text= "${myList.id}"></td>
+        <td th:text= "${myList.description}"></td>
+        <td th:text= "${myList.amount}"></td>
+        <td th:text= "${myList.date}"></td>
+        <td>
+        <form action="/delete" method="post">
+        <input type="hidden" name="id" th:value="${myList.id}" />
+        <button type="submit" class="btn btn-danger">삭제</button>
+        </td>
+      </form>
+      </tr>
+      
+<!-- 날짜 선택 폼 -->
+       <tr>
+      <form action="/listByDate" method="get">
+  	<label for="datePicker">날짜 선택:</label>
+  	<input type="date" id="datePicker" name="selectedDate">
+  	<button type="submit" class="btn btn-primary">조회</button>
+</form>
+</tr>
+
+    <!-- 총합 표시 -->
+      <tr>
+        <th>total</th>
+        <td th:text="${totalAmount}"></td>
+      </tr>
+      
+      <a href="/main">
+      <button> Main </button> <!--<button> 태그에는 href 속성이 없어-->
+      </a>
+      
+    </tbody>
+    
+  </table>
+</div>
+<div>
+  <tbody>
+     
+
+    </tbody>
+</div>
+ <script th:src="@{/js/mainchart.js}"></script>
+</body>
+</html>
